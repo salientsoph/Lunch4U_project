@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+        <!-- 메인 화면 -->
+        <div class="slider-area hero-bg1">
+            <div class="single-slider slider-height1 d-flex align-items-center">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-10 col-lg-10">
+                            <!-- 메인 타이틀 -->
+                            <div class="hero__caption pt-100" style="height:900px;">
+                                <h1></h1>
+                                <p></p>
+                            </div>
+                            <!-- 메인 카테고리 (이미지) - 식당 리스트/지도 검색/게시판 버튼 이미지 제작 후 넣을 곳 -->
+                            <div class="category-img text-center">
+                                <a href="{% url 'list' %}"> <img src='{% static "img/menu/find_button.png" %}' alt="" style="width:200px; height:200px; margin-right:160px;"></a>
+                                <a href="{% url 'map' %}"> <img src='{% static "img/menu/map_button.png" %}' alt="" style="width:200px; height:200px; margin:auto;"></a>
+                                <a href="{% url 'bbs' %}"> <img src='{% static "img/menu/bbs_button.png" %}' alt="" style="width:200px; height:200px; margin-left:160px;"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--메인 화면 끝 -->
+{% endblock %}

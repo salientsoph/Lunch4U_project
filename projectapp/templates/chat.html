@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+	#sidebar {
+		background: #333;
+		width: 300px;
+		height: 100%;
+		top: 0;
+		right: -300px;
+		position: fixed;
+	}
+
+	#sidebar > button {
+		background:#333;
+		position: absolute;
+		top: 150px;
+		right: 300px;
+		width: 52px;
+		height: 52px;
+		border: none;
+		color: white;
+	}
+</style>
+<body>
+<div id="wrap">
+		<aside id="sidebar">
+			<iframe src="https://service.dongledongle.com/kyn1987" frameborder="0" width="90%" height="700"></iframe>
+            <button><span class="btn_t">OPEN</span></button>
+		</aside>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var duration = 300;
+
+		var $side = $('#sidebar');
+		var $sidebt = $side.find('button').on('click', function(){
+			$side.toggleClass('open');
+
+			if($side.hasClass('open')) {
+				$side.stop(true).animate({right:'0px'}, duration);
+				$sidebt.find('span').text('CLOSE');
+			}else{
+				$side.stop(true).animate({right:'-300px'}, duration);
+				$sidebt.find('span').text('OPEN');
+			};
+		});
+	});
+</script>
+</html>

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- 메인 TOP -->
+    <div class="slider-area hero-bg2">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <!-- Hero Caption -->
+                        <div class="hero__caption hero__caption2 pt-200">
+                            <h1 style="font-family: 'Cute Font', cursive; color:black; font-size:80px;">회원가입</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- 메인 화면 구역 -->
+  <div class="listing-area pt-10 pb-120">
+    <div class="container">
+            <div class="row mt-5">
+                <div class="col-12 text-center" style="color:red">
+         {{error}}
+        </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-6" style="margin:auto; border:1px solid #B367FF; padding: 20px;">
+                    <form method="POST" action="{% url 'register' %}">
+                        {% csrf_token %}
+                        <div class="mt-20">
+                            <p style="font-size:20px;">아이디</p>
+                            <input type="text" class="single-input-primary" id="userid"  placeholder="Id" name="userid"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Id'" required>
+                        </div>
+                        <div class="mt-20">
+                            <p style="font-size:20px;">성명</p>
+                            <input type="text" class="single-input-primary" id="username"  placeholder="Name" name="username"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = '사용자 아이디'"required>
+                        </div>
+                        <div class="mt-20">
+                            <p style="font-size:20px;">비밀번호</p>
+                            <input type="password" class="single-input-primary" id="password" placeholder="Password" name="password"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required>
+                        </div>
+                        <div class="mt-20">
+                            <p style="font-size:20px;">비밀번호 확인</p>
+                            <input type="password" class="single-input-primary" id="re-password" placeholder="Password Confirm" name="re-password"
+                                   onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password Confirm'" required>
+                        </div>
+                        <div class="mt-20">
+                            <p style="font-size:20px;">반 유형</p>
+                        <div class="form-select" id="default-select">
+                        <select name="class_type">
+                            <option value="1">빅데이터</option>
+                            <option value="2">인공지능</option>
+                            <option value="3">클라우드</option>
+                            <option value="4">IoT</option>
+                        </select>
+                        </div>
+                        </div>
+                        <div class="mt-20">
+                        <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                              type="submit">회원가입</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 text-center">
+            <a href="{% url 'index' %}">메인화면으로</a>
+            </div>
+    </div>
+  </div>
+
+<!-- 메인 화면 끝 -->
+{% endblock %}

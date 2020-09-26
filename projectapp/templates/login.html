@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- 메인 TOP -->
+    <div class="slider-area hero-bg2">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <!-- Hero Caption -->
+                        <div class="hero__caption hero__caption2 pt-200">
+                            <h1 style="font-family: 'Cute Font', cursive; color:black; font-size:80px;">로그인</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- 메인 화면 구역 -->
+  <div class="listing-area pt-10 pb-120">
+    <div class="container">
+        {% if msg  %}
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h1>{{msg}}</h1>
+        </div>
+    </div>
+    {% else %}
+    <div class="row mt-5">
+        <div class="col-12 text-center" style="color:red">
+         {{error}}
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-6" style="margin:auto; border:1px solid #B367FF; padding: 20px;">
+            <form method="POST" action="{% url 'login'%}">
+              {% csrf_token %}
+              <div class="mt-20">
+                  <p style="text-align:center; font-size:34px;">ID</p>
+                  <input type="text" class="single-input-primary" id="userid" name="userid" placeholder="사용자 아이디"
+                         onfocus="this.placeholder = ''" onblur="this.placeholder = '사용자 아이디'" required>
+              </div>
+                <div class="mt-20">
+                    <p style="text-align:center; font-size:34px;">PASSWORD</p>
+                    <input type="password" class="single-input-primary" id="password" name="password" placeholder="비밀번호"
+                           onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호'" required>
+                </div>
+                <div class="mt-20">
+                <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                              type="submit">로그인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-12 text-center">
+        <a href="{% url 'index' %}">메인화면으로</a>
+    </div>
+    </div>
+  </div>
+
+<!-- 메인 화면 끝 -->
+
+{% endblock %}

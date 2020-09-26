@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- 메인 TOP -->
+    <div class="slider-area hero-bg2">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <!-- Hero Caption -->
+                        <div class="hero__caption hero__caption2 pt-200">
+                            <h1 style="font-family: 'Cute Font', cursive; color:black; font-size:80px;">게시판</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- 메인 화면 구역 -->
+  <div class="listing-area pt-120 pb-120">
+    <div class="container">
+                    <div class="col-lg-12">
+                        <div class="count mb-35">
+                            <a href="{% url 'bbs' %}" class="genric-btn primary-border">목록</a>
+
+                            <hr>
+                            <h3 style="color:gray">{{bbsinfo.bbs_type}}</h3>
+                            <h1>{{bbsinfo.bbs_title}}</h1>
+                            <p style="color:gray">{{bbsinfo.bbs_writer}} | {{bbsinfo.bbs_date}} | 조회수 {{bbsinfo.bbs_cnt}}</p>
+                            <hr>
+                            <span>
+                                {{bbsinfo.bbs_content}}
+                            </span>
+                            <hr>
+                            {% ifequal userid bbsinfo.bbs_writer %}
+                            <a href="{% url 'bbsupdate' %}?pk={{bbsinfo.id}}" class="genric-btn info-border">수정</a>
+                            <a onclick="del_confirm({{ bbsinfo.id }})" class="genric-btn danger-border">삭제</a>
+                            {% endifequal %}
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
+<!-- 메인 화면 끝 -->
+<script>
+    function del_confirm(pk) {
+        let result = confirm("정말 삭제하겠습니까??");
+        if( result )
+            location.href = "{% url 'bbsdelete' %}?pk="+pk;
+     }
+ </script>
+{% endblock %}
+

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- 메인 TOP -->
+    <div class="slider-area hero-bg2">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <!-- Hero Caption -->
+                        <div class="hero__caption hero__caption2 pt-200">
+                            <h1 style="font-family: 'Cute Font', cursive; color:black; font-size:80px;">지도 검색</h1>
+                        </div>
+                        <form method="get" action="{% url 'mapsearch' %}" class="search-box mb-20" style="background : #B2EBF4">
+                             <div class="input-form">
+                                    <input type="text" name="findword" placeholder="식당명 검색" value="{{selected_values.findword}}">
+                                </div>
+                            <div class="select-form">
+                                <div class="select-items">
+                                    <select name="res_type">
+                                        <option value="all">전체</option>
+                                        <option value="kor"{% ifequal selected_values.type 'kor' %} selected {% endifequal %}>한식</option>
+                                        <option value="chn"{% ifequal selected_values.type 'chn' %} selected {% endifequal %}>중식</option>
+                                        <option value="jpn"{% ifequal selected_values.type 'jpn' %} selected {% endifequal %}>일식</option>
+                                        <option value="wes"{% ifequal selected_values.type 'wes' %} selected {% endifequal %}>양식</option>
+                                        <option value="etc"{% ifequal selected_values.type 'etc' %} selected {% endifequal %}>기타</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <button class="button rounded-0 primary-bg text-white w-10 btn_1 boxed-btn"
+                              type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- 메인 화면 구역 -->
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="d-none d-sm-block mb-5 pb-4">
+                    <div id="map" style="height: 480px; position: relative; overflow: hidden;">
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&amp;callback=initMap"></script>
+                        <script>
+                            var dom2 = document.getElementById("map");
+                            if (dom2){
+                                var current = {lat : 37.508861, lng :127.056819}
+                                var map = new google.maps.Map(dom2, {
+                                            center: current,
+                                            zoom: 18
+                                          });
+
+                                {% for point in reslist %}
+
+                                foodlatlng = {lat : {{point.locate_x}}, lng: {{point.locate_y}} }
+                                var myIcon= { url:"/static/img/mark/{{point.res_type}}.png",
+                                                scaledSize: new google.maps.Size(30, 30)
+                                             };
+
+                                var marker = new google.maps.Marker({position: foodlatlng, map:map, icon:myIcon} );
+                                var contentString = "<img src='/static/img/res/{{point.res_image}}' style='width:150px; height:100px;'}><a href = '{% url 'resinfo' %}?pk={{point.id}}' style='color:black; font-size:15px;'>{{point.res_name}}</a>";
+                                var infowindow = new google.maps.InfoWindow({
+                                                    content: contentString
+                                                 });
+
+                                marker.addListener('click', makeListener(map, marker, infowindow));
+
+                                {% endfor %}
+                                }
+
+                                function makeListener(map, marker, infowindow){
+                                    return function(){
+                                        infowindow.open(map, marker);
+                                         };
+                                }
+                                function makeOutListener(infowindow){
+                                    return function() {
+                                        infowindow.close();
+                                        };
+                                }
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+<!-- 메인 화면 끝 -->
+{% endblock %}

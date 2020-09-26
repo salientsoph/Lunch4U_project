@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- 메인 TOP -->
+    <div class="slider-area hero-bg2">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <!-- Hero Caption -->
+                        <div class="hero__caption hero__caption2 pt-200">
+                            <h1 style="font-family: 'Cute Font', cursive; color:black; font-size:80px;">음식점 리스트</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- 메인 화면 구역 -->
+  <div class="listing-area pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <!-- 왼쪽 구역 -->
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                            <div class="small-section-tittle2 mb-45">
+                            <h3>필터</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- 검색 메뉴 목록 -->
+                <form method="get" action="../search/">
+                <div class="category-listing mb-50">
+                    <!-- single one -->
+                    <div class="single-listing">
+
+                        <!-- 셀렉트 ( 정렬 기준 ) -->
+                        <div class="select-job-items2">
+                            <h4>정렬</h4>
+                            <select name="sort">
+                                <option value="by_s">별점 순</option>
+                                <option value="by_r">리뷰 순</option>
+                            </select>
+                        </div>
+
+                        <!-- 셀렉트 ( 식당 종류 ) -->
+                        <div class="select-job-items2">
+                            <h4>종류</h4>
+                            <select name="res_type">
+                                <option value="all">전체</option>
+                                <option value="kor">한식</option>
+                                <option value="chn">중식</option>
+                                <option value="jpn">일식</option>
+                                <option value="wes">양식</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </div>
+
+                        <!-- 셀렉트 ( 가격대 ) -->
+                        <div class="select-job-items2">
+                            <h4>가격대</h4>
+                            <select name="price_type">
+                                <option value="allcost">전체</option>
+                                <option value="6000">~ 6000</option>
+                                <option value="8000">6000 ~ 8000</option>
+                                <option value="10000">8000 ~ 10000</option>
+                                <option value="12000">10000 ~ 12000</option>
+                            </select>
+                        </div>
+
+                        <!-- 태그 선택 -->
+                        <div class="select-Categories">
+                            <div class="small-section-tittle2 mb-20">
+                                <h4>태그</h4>
+                            </div>
+                            <label class="container"># Take Out
+                                <input type="checkbox" name="tout" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container"># 1인석 제공
+                                <input type="checkbox" name="solo" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container"># 자율 배식
+                                <input type="checkbox" name="free" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="container"># 점심 특선
+                                <input type="checkbox" name="spec" value="1">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <br>
+                        <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                              type="submit">Search</button>
+                        <!-- 태그 선택 끝 -->
+                    </div>
+                </div>
+                <!-- Job Category Listing End -->
+                </form>
+            </div>
+
+            <!-- 오른쪽 구역 -->
+            <div class="col-xl-8 col-lg-8 col-md-6">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="count mb-35">
+                            <span>음식점 목록</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 식당 리스트 출력 화면 -->
+                <div class="popular-directorya-area fix">
+                        <div class="row">
+                            <!-- 리스트 반복 내용 ( 반드시 4개 출력, 아닐시 프레임 깨짐) -->
+                            {% for resdata in reslist %}
+                            <div class="col-lg-6">
+                                <div class="properties properties2 mb-30">
+                                    <div class="properties__card">
+                                        <div class="properties__img overlay1">
+                                            <img src='/static/img/res/{{ resdata.res_image }}' width="280"  height="200">
+                                        </div>
+                                        <div class="properties__caption">
+                                            <h2><a href="../resinfo/?pk={{ resdata.pk }}">{{ resdata.res_name }}</a></h2>
+                                            <p>
+                                            {% if resdata.res_type == "kor" %}
+                                            한식
+                                            {% endif %}
+                                            {% if resdata.res_type == "jpn" %}
+                                            일식
+                                            {% endif %}
+                                            {% if resdata.res_type == "chn" %}
+                                            중식
+                                            {% endif %}
+                                            {% if resdata.res_type == "wes" %}
+                                            양식
+                                            {% endif %}
+                                            {% if resdata.res_type == "etc" %}
+                                            기타
+                                            {% endif %}
+                                                | {{ resdata.res_price}}원대
+                                            </p>
+                                        </div>
+                                        <div class="properties__footer d-flex justify-content-between align-items-center">
+                                            <div class="restaurant-name">
+                                                <h4>★ {{ resdata.star_avg|floatformat }} ({{ resdata.rev_cnt }})</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <!-- 여기까지 반복 -->
+                        </div>
+                </div>
+                <!-- 식당 리스트 화면 끝 -->
+
+                <!-- 페이징  -->
+                <div class="pagination-area text-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="single-wrap d-flex justify-content-center">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-start " id="myDIV">
+                                            {% if reslist.has_previous %}
+                                            <li class="page-item"><a class="page-link" href="?page={{reslist.previous_page_number}}"><span class="ti-angle-left"></span></a></li>
+                                            {% endif %}
+                                            {% for page in paginator_range %}
+                                            {% if reslist.number == page %}
+                                            <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+                                            {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% if reslist.has_next %}
+                                            <li class="page-item"><a class="page-link" href="?page={{reslist.next_page_number}}"><span class="ti-angle-right"></span></a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 페이징 끝  -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 메인 화면 끝 -->
+{% endblock %}

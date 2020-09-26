@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <!-- 메인 TOP -->
+    <div class="slider-area hero-bg2">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-lg-10">
+                        <!-- Hero Caption -->
+                        <div class="hero__caption hero__caption2 pt-200">
+                            <h1 style="font-family: 'Cute Font', cursive; color:black; font-size:80px;">상세 정보</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <!-- 메인 화면 구역 -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="row">
+                    <article class="blog_item" style="width: 80%; margin:auto;">
+                        <div class="blog_item_img">
+                            <img class="card-img rounded-0" src="/static/img/res/{{ r_info.res_image }}" style="width :50% ; height : 320px;"><img class="card-img rounded-0" src="/static/img/res_in/{{ r_info.res_image }}" style="width : 50%; height : 320px;">
+                            <a class="blog_item_date">
+                                <h3 style="margin-top : 4px; margin-bottom : 4px;">{{ r_info.star_avg|floatformat }}</h3>
+                            </a>
+                        </div>
+                        <div class="blog_details">
+                            <h2 class="blog-head" style="color: #2d2d2d;">{{ r_info.res_name }}</h2>
+                            <p><b>식당종류 | </b>
+                                 {% if r_info.res_type == "kor" %}
+                                            한식
+                                            {% endif %}
+                                            {% if r_info.res_type == "jpn" %}
+                                            일식
+                                            {% endif %}
+                                            {% if r_info.res_type == "chn" %}
+                                            중식
+                                            {% endif %}
+                                            {% if r_info.res_type == "wes" %}
+                                            양식
+                                            {% endif %}
+                                            {% if r_info.res_type == "etc" %}
+                                            기타
+                                            {% endif %}
+
+                            </p>
+                            <p><b>가격대 | </b> {{r_info.res_price}} </p>
+                            <p><b>식당소개 | </b> {{r_info.res_info}} </p>
+                            <p><b>주소 | </b> {{r_info.res_addr}}</p>
+                            <div id="infomap" style="height : 300px; width : 50%; vertical-align : light;"></div>
+                        </div>
+                        <div class="progress-table-wrap">
+                            <div class="progress-table" style="width: 100%; margin:auto;">
+                                <div class="table-head">
+                                    <div class="serial" style="width: 20%; text-align:center;">No</div>
+                                    <div class="visit" style="width: 50%; text-align:center;">메뉴명</div>
+                                    <div class="visit" style="width: 30%; text-align:center;">가격</div>
+                                </div>
+                                 {% for menu in menulist %}
+                                <div class="table-head">
+                                    <div class="serial" style="width: 20%; text-align:center; color:black; font-weight:normal">{{forloop.counter}}</div>
+                                    <div class="visit" style="width: 50%; text-align:center; color:black; font-weight:normal">{{menu.menu_name}}</div>
+                                    <div class="visit" style="width: 30%; text-align:center; color:black; font-weight:normal">{{menu.menu_price}}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+					    </div>
+                        <!-- 리뷰 구역 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <form method="post" action="{% url 'review_write' %}">
+                                <div class="col-md-12">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <select name="rev_star">
+                                            <option value="1">★</option>
+                                            <option value="2">★★</option>
+                                            <option value="3">★★★</option>
+                                            <option value="4">★★★★</option>
+                                            <option value="5">★★★★★</option>
+                                        </select>
+
+                                        {% if userid %}
+                                            <input type="hidden" name="r_writer" value="{{ userid }}">
+                                        {% else %}
+                                            <input type="hidden" name="r_writer" value="guest">
+                                        {% endif %}
+                                        <input type="hidden" name="res_id" value="{{ r_info.id }}">
+                                    </div>
+                                    <div class="form-group row">
+                                        <textarea class="form-control" name="r_content" rows="3" placeholder="리뷰를 입력해주세요." required></textarea>
+                                    </div>
+                                    <div class="text-right" style="float:right">
+                                        {% if userid %}
+                                        <button type="submit" class="btn btn-sm">리뷰 저장</button>
+                                        {% else %}
+                                        <p>로그인을 해야 리뷰를 작성하실 수 있습니다.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                </form>
+                                    <div id="review_list" style="margin-top : 50px;">
+                                        {% if reviewlist %}
+                                            {% for review in reviewlist %}
+                                            <div style="height : auto">
+                                                {% ifequal review.deleted True %}
+                                                <p>삭제된 리뷰입니다.</p>
+                                                {% else %}
+                                                <p>{{ review.rev_writer }} (★{{ review.rev_star }}) | {{ review.created }}</p>
+                                                <p>{{ review.rev_content }}</p>
+                                                    {% ifequal userid review.rev_writer %}
+                                                    <a href="#" onclick="del_confirm({{ review.id }}, {{r_info.id}})" style="color:red">삭제</a>
+                                                    {% endifequal %}
+                                                {% endifequal %}
+                                            </div>
+                                            <hr>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+<script>
+    function del_confirm(pk, res_id) {
+        let result = confirm("정말 삭제하겠습니까??");
+        if( result )
+            location.href = "{% url 'review_delete' %}?pk="+pk+"&res_id="+res_id;
+     }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy81EbO46BRSnX1DOgg_F84bhsdbku2z4"></script>
+    <script>
+        var dom = document.getElementById("infomap");
+		if(dom) {
+			var latlng = { lat: {{r_info.locate_x}}, lng: {{r_info.locate_y}}}
+			var map = new google.maps.Map(dom, {
+            	center: latlng,
+            	zoom: 16
+          	});
+			new google.maps.Marker({position: latlng, map: map})
+        }
+    </script>
+<!-- 메인 화면 끝 -->
+{% endblock %}
